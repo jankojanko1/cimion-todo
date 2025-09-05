@@ -11,7 +11,7 @@ export default function page() {
 
   return (
     <div className="w-full h-screen px-2 md:px-4 flex justify-center items-center font-general">
-      <div className="max-md:w-full sm:w-3/5 lg:w-2/5 xl:w-1/5 h-auto bg-black bg-opacity-10 text-black flex flex-col p-2">
+      <div className="max-md:w-full sm:w-3/5 lg:w-2/5 2xl:w-1/4 h-auto bg-black bg-opacity-10 text-black flex flex-col p-2">
         <div className="w-full flex justify-between text-xs">
           <span className="font-array text-sm">Sign in page</span>
           <Link href="/register">
