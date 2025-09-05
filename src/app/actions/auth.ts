@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/lib/db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
@@ -49,43 +49,40 @@ export async function registerUser(formData: FormData) {
 
   return { success: true };
 }
+
 export async function loginUser(formData: FormData) {
-  try {
-    const name = formData.get("name") as string;
-    const password = formData.get("password") as string;
-
-    if (!name || !password) {
-      return { error: "Wprowadź wszystkie pola" };
-    }
-
-    const user = await prisma.user.findUnique({ where: { name } });
-
-    if (!user) {
-      return { error: "Nieprawidłowy login lub hasło" };
-    }
-
-    const match = await bcrypt.compare(password, user.password);
-
-    if (!match) {
-      return { error: "Nieprawidłowy login lub hasło" };
-    }
-
-    const token = jwt.sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: "7d",
-    });
-
-    cookies().set("session", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    redirect("/dashboard");
-  } catch (err) {
-    console.error("Login error:", err);
-    return { error: "Błąd serwera, spróbuj ponownie" };
+  const existingToken = cookies().get("session")?.value;
+  if (existingToken) {
+    return { error: "Jesteś już zalogowany" };
   }
+
+  const name = formData.get("name") as string;
+  const password = formData.get("password") as string;
+
+  if (!name || !password) {
+    return { error: "Wprowadź wszystkie pola" };
+  }
+
+  const user = await prisma.user.findUnique({ where: { name } });
+  if (!user) {
+    return { error: "Taki login nie istnieje" };
+  }
+
+  const match = await bcrypt.compare(password, user.password);
+  if (!match) {
+    return { error: "Nieprawidłowe hasło" };
+  }
+
+  const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: "7d" });
+
+  cookies().set("session", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 7,
+  });
+
+  return { success: true, user: { id: user.id, name: user.name } };
 }
 
 export async function logoutUser() {
