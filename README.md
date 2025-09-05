@@ -22,7 +22,7 @@ Deployed on **Vercel**: [Cimion ToDo App](https://cimion-todo-qng6c9qrv-cimgehel
 - **Backend:** Node.js, Prisma ORM  
 - **Database:** PostgreSQL (via Neon)  
 - **Authentication:** JWT  
-- **Styling:** Tailwind CSS  
+- **Styling:** Tailwind CSS + Three.js
 - **Development DB:** Docker (for local PostgreSQL)
 
 ---
