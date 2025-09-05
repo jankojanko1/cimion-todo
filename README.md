@@ -61,9 +61,12 @@ Run Prisma migrations in production with:
 npx prisma migrate deploy
 ```
 🎯 Usage:
+```bash
 Register a new account
 Log in with your credentials
 Add tasks and subtasks
 Update task statuses or delete tasks/subtasks
+```
+
 📄 License
 This project is licensed under the MIT License.
