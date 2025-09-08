@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Background from "./utils/Background";
+import BackgroundLayout from "./layout/BackgroundLayout";
 import Header from "@/components/header";
 import Privacy from "@/components/privacy";
 import RouteTransition from "@/components/route";
@@ -32,7 +32,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${array.variable} ${general.variable} antialiased`}>
         <Header />
-        <Background />
+        <BackgroundLayout />
         <RouteTransition>{children}</RouteTransition>
         <Footer />
         <Privacy />
