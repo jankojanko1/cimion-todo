@@ -31,6 +31,8 @@ yarn-error.log*
 .env*.local
 .env
 
+/src/app/tests
+
 # vercel
 .vercel
 
